@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "telegatagger"
+version = "0.1.0"
+description = ""
+authors = ["trojvn <mrx.trojan@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python-dotenv = "^1.0.1"
+mongowrapper = {git = "https://github.com/trojvn/mongowrapper.git"}
+rich = "^13.8.0"
+rich-menu = "^0.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
