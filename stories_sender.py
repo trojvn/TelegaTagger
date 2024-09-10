@@ -2,7 +2,7 @@ import contextlib
 from pathlib import Path
 from random import shuffle
 from shutil import move
-from threading import Thread
+from threading import Lock, Thread
 from time import sleep
 
 import httpx
@@ -12,6 +12,8 @@ from ask_from_history import ask_from_history
 from base_session import BaseSession
 from console import console
 from envs import API_URL, LICENSE_KEY
+
+LOCKER = Lock()
 
 
 class StoriesSender(BaseSession):
@@ -112,6 +114,8 @@ class StoriesSender(BaseSession):
             console.log(f"[{item.name}] Ошибка добавления сторис!", style="red")
         elif "OK" in r:
             console.log(f"[{item.name}] Сторис успешно добавлен!", style="green")
+            with LOCKER:
+                self.__write_usernames_to_black_list(usernames)
         else:
             console.log(f"[{item.name}] {r}", style="red")
 
@@ -127,7 +131,6 @@ class StoriesSender(BaseSession):
             usernames = self.__pop_usernames(count=5)
             if not usernames:
                 break
-            self.__write_usernames_to_black_list(usernames)
             console.log(f"[{item.name}] -> {usernames}")
             args = (item, json_file, json_data, usernames)
             thr = Thread(target=self._main, args=args)
