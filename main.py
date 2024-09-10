@@ -1,11 +1,20 @@
 from pathlib import Path
 
+import httpx
 from rich.prompt import Prompt
 
 from console import console
 from envs import API_URL, LICENSE_KEY
 from json_converter import JsonConverter
 from stories_sender import StoriesSender
+
+
+def restart_module():
+    restart_ask = Prompt.ask("Перезагрузить модуль? (Y/n)", console=console).lower()
+    if not restart_ask:
+        restart_ask = "y"
+    if restart_ask == "y":
+        httpx.get(f"{API_URL}restart/")
 
 
 def get_usernames() -> set[str]:
@@ -34,6 +43,8 @@ def _main():
         console.log("Параметр должен быть числом!", style="yellow")
         return console.input("Нажмите Enter для продолжения...")
     count_stories_ask = int(count_stories_ask)
+
+    restart_module()
 
     ss = StoriesSender(usernames)
     count = JsonConverter(need_log=False).main()
