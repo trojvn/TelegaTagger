@@ -1,5 +1,6 @@
-import logging
 from pathlib import Path
+
+from rich.prompt import Prompt
 
 from console import console
 from envs import API_URL, LICENSE_KEY
@@ -20,34 +21,40 @@ def get_usernames() -> set[str]:
 def _main():
     [Path(dir).mkdir(exist_ok=True) for dir in ["sessions"]]
     if not (usernames := get_usernames()):
-        console.log("Файл с именами пользователей usernames.txt пуст!")
-        return input("Нажмите Enter для продолжения...")
+        console.log("Файл с именами пользователей usernames.txt пуст!", style="yellow")
+        return console.input("Нажмите Enter для продолжения...")
     if not API_URL:
-        console.log("Переменная окружения API_URL пуста! (.env)")
-        return input("Нажмите Enter для продолжения...")
+        console.log("Переменная окружения API_URL пуста! (.env)", style="red")
+        return console.input("Нажмите Enter для продолжения...")
     if not LICENSE_KEY:
-        console.log("Переменная окружения LICENSE_KEY пуста! (.env)")
-        return input("Нажмите Enter для продолжения...")
+        console.log("Переменная окружения LICENSE_KEY пуста! (.env)", style="red")
+        return console.input("Нажмите Enter для продолжения...")
+    count_stories_ask = Prompt.ask("Сколько сторис с аккаунта?", console=console)
+    if not count_stories_ask.isdigit():
+        console.log("Параметр должен быть числом!", style="yellow")
+        return console.input("Нажмите Enter для продолжения...")
+    count_stories_ask = int(count_stories_ask)
 
     ss = StoriesSender(usernames)
     count = JsonConverter(need_log=False).main()
     if not count:
-        console.log("Нет аккаунтов в папке sessions!")
-        return input("Нажмите Enter для продолжения...")
-    for _ in range(3):
+        console.log("Нет аккаунтов в папке sessions!", style="yellow")
+        return console.input("Нажмите Enter для продолжения...")
+
+    for _ in range(count_stories_ask):
         r = ss.main()
         if not r:
             break
 
-    return input("Нажмите Enter для продолжения...")
+    return console.input("Нажмите Enter для продолжения...")
 
 
 def main():
     while True:
         try:
             _main()
-        except Exception as e:
-            logging.exception(e)
+        except Exception:
+            console.print_exception()
 
 
 if __name__ == "__main__":

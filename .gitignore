@@ -6,6 +6,7 @@ errors/
 history_donors.json
 history_proxies.json
 .env.db
+.mypy_cache
 .venv
 .idea
 .ruff_cache

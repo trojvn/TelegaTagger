@@ -125,9 +125,9 @@ class StoriesSender(BaseSession):
             return False
         threads: list = []
         for item, json_file, json_data in self._find_sessions():
-            while len(threads) >= 3:
+            while len(threads) >= 5:
                 with contextlib.suppress(Exception):
-                    threads[-1].join()
+                    threads[0].join()
             usernames = self.__pop_usernames(count=5)
             if not usernames:
                 break
