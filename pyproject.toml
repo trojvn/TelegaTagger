@@ -11,6 +11,10 @@ python-dotenv = "^1.0.1"
 mongowrapper = {git = "https://github.com/trojvn/mongowrapper.git"}
 rich = "^13.8.0"
 rich-menu = "^0.2.0"
+httpx = "^0.27.2"
+telethon = "^1.36.0"
+tooler = {git = "https://github.com/trojvn/tooler.git"}
+jsoner = {git = "https://github.com/trojvn/jsoner.git"}
 
 
 [build-system]

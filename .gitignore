@@ -1,4 +1,10 @@
+settings.env
 .env
+sessions/
+banned/
+errors/
+history_donors.json
+history_proxies.json
 .env.db
 .venv
 .idea
