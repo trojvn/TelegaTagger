@@ -1,4 +1,5 @@
 from pathlib import Path
+from time import sleep
 
 import httpx
 from rich.prompt import Prompt
@@ -52,10 +53,17 @@ def _main():
         console.log("Нет аккаунтов в папке sessions!", style="yellow")
         return console.input("Нажмите Enter для продолжения...")
 
+    delay_ask = Prompt.ask("Задержка между сторис (сек.)", console=console)
+    if not delay_ask.isdigit():
+        delay_ask = 10
+    else:
+        delay_ask = int(delay_ask)
+
     for _ in range(count_stories_ask):
         r = ss.main()
         if not r:
             break
+        sleep(delay_ask)
 
     return console.input("Нажмите Enter для продолжения...")
 
