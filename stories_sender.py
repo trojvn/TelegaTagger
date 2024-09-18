@@ -70,7 +70,7 @@ class StoriesSender(BaseSession):
     def __post_request(self, item: Path, params: dict, json_data: dict) -> str:
         while True:
             try:
-                r = httpx.post(API_URL, params=params, json=json_data, timeout=30)
+                r = httpx.post(API_URL, params=params, json=json_data, timeout=120)
                 if r.status_code == 200:
                     return r.text
             except Exception as e:
