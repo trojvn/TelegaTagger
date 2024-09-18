@@ -113,6 +113,18 @@ class StoriesSender(BaseSession):
                 move(json_file, self.__errors_path)
             console.log(f"[{item.name}] Ошибка добавления сторис!", style="red")
         elif "OK" in r:
+            success_usernames = r.replace("OK:", "").split("|")
+            if len(success_usernames) != len(usernames):
+                with LOCKER:
+                    self.__write_usernames_to_black_list(success_usernames)
+                with contextlib.suppress(Exception):
+                    move(item, self.__errors_path)
+                with contextlib.suppress(Exception):
+                    move(json_file, self.__errors_path)
+                message = f"[{item.name}] Сторис успешно добавлен! (лимит)"
+                return console.log(message, style="yellow")
+
+            console.log(r, style="green")
             console.log(f"[{item.name}] Сторис успешно добавлен!", style="green")
             with LOCKER:
                 self.__write_usernames_to_black_list(usernames)
