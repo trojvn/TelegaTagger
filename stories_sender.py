@@ -124,7 +124,6 @@ class StoriesSender(BaseSession):
                 message = f"[{item.name}] Сторис успешно добавлен! (лимит)"
                 return console.log(message, style="yellow")
 
-            console.log(r, style="green")
             console.log(f"[{item.name}] Сторис успешно добавлен!", style="green")
             with LOCKER:
                 self.__write_usernames_to_black_list(usernames)
