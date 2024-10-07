@@ -79,7 +79,7 @@ def _main():
         return console.input("Нажмите Enter для продолжения...")
     users_count_ask = int(users_count_ask)
 
-    _prompt = "Введите период действия сторис (0 - дефолтный)"
+    _prompt = "Введите период действия сторис в часах (0 - дефолтный)"
     period_ask = Prompt.ask(_prompt, console=console, default="0")
     if not period_ask.isdigit():
         console.log("Параметр должен быть числом!", style="yellow")
