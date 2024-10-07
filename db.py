@@ -1,6 +1,5 @@
-from mongowrapper import MongoOptions, MongoUser
+from pathlib import Path
 
-from envs import DB_NAME, DB_PSWD, DB_USER
+from montywrapper import MontyUser
 
-MONGO_OPTIONS = MongoOptions(DB_USER, DB_PSWD, DB_NAME)
-settings = MongoUser(MONGO_OPTIONS, "settings.project").collection
+users = MontyUser(Path("database"), "users").collection

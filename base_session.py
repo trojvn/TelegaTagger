@@ -8,10 +8,14 @@ from console import console
 
 class BaseSession:
     def __init__(self):
-        self.base_dir = Path("sessions")
+        self.base_dir = Path("сессии")
         self.base_dir.mkdir(exist_ok=True)
+        self.errors_dir = self.base_dir / "ошибки"
+        self.errors_dir.mkdir(exist_ok=True)
+        self.banned_dir = self.base_dir / "забаненные"
+        self.banned_dir.mkdir(exist_ok=True)
 
-    def _find_sessions(self) -> Generator:
+    def find_sessions(self) -> Generator:
         for item in self.base_dir.glob("*.session"):
             json_file = item.with_suffix(".json")
             if not json_file.is_file():

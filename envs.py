@@ -1,10 +1,14 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv("settings.env")
-API_URL = os.getenv("API_URL", "")
+_env_file = Path(".env")
+if not _env_file.is_file():
+    _env_file = Path("settings.env")
+    if not _env_file.is_file():
+        _env_file = Path("env.txt")
+
+load_dotenv(_env_file)
 LICENSE_KEY = os.getenv("LICENSE_KEY", "")
-DB_NAME = os.getenv("DB_NAME", "")
-DB_USER = os.getenv("DB_USER", "")
-DB_PSWD = os.getenv("DB_PSWD", "")
+DEBUG = os.getenv("DEBUG", "")

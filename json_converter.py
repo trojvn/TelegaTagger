@@ -12,12 +12,9 @@ from console import console
 
 
 class JsonConverter(BaseSession):
-    def __init__(self, need_proxy: bool = True, need_log: bool = True):
+    def __init__(self):
         super().__init__()
-        self.__need_proxy, self.__need_log = need_proxy, need_log
         self.__api_id, self.__api_hash = 2040, "b18441a1ff607e10a989891a5462e627"
-        if not need_proxy:
-            return
         prompt = "Введите прокси (формат http:ipaddr:port:user:pswd)"
         proxy = ask_from_history(prompt, console, Path("history_proxies.json"))
         try:
@@ -36,20 +33,15 @@ class JsonConverter(BaseSession):
         ss._auth_key = client.session.auth_key  # type: ignore
         ss._dc_id = client.session.dc_id  # type: ignore
         ss._port = client.session.port  # type: ignore
-        del client
         string_session = ss.save()
-        if self.__need_proxy:
-            json_data["proxy"] = self.__proxy
+        del ss, client
+        json_data["proxy"] = self.__proxy
         json_data["string_session"] = string_session
         json_write_sync(json_file, json_data)
-        if self.__need_log:
-            console.log(f"{item.name} | Успешно обработан!", style="green")
 
     def main(self) -> int:
         count = 0
-        for item, json_file, json_data in self._find_sessions():
+        for item, json_file, json_data in self.find_sessions():
             self._main(item, json_file, json_data)
             count += 1
-        if self.__need_log:
-            console.log(f"Обработано всего: {count}")
         return count
