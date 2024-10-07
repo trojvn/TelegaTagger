@@ -230,7 +230,7 @@ montydb = {version = "^2.5.3", extras = ["bson"]}
 type = "git"
 url = "https://github.com/trojvn/montywrapper.git"
 reference = "HEAD"
-resolved_reference = "9177e22f26741aa62caaed9a138433be5a1679b9"
+resolved_reference = "bb8c7c205c62ff03d736885dcba1f56763ff2bad"
 
 [[package]]
 name = "pyaes"
