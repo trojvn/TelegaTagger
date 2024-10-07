@@ -21,7 +21,7 @@ def compile_by_pyinstaller():
         # noinspection PyPackageRequirements
         import PyInstaller.__main__  # type:ignore
 
-    cmd = [main_script, "-F", "--collect-all=montywrapper"]
+    cmd = [main_script, "-F", "--collect-all=montydb"]
     for icon in Path(".").glob("*.ico"):
         cmd.append("-i")
         cmd.append(icon.name)
