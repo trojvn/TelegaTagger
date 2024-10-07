@@ -224,13 +224,13 @@ files = []
 develop = false
 
 [package.dependencies]
-montydb = "^2.5.3"
+montydb = {version = "^2.5.3", extras = ["bson"]}
 
 [package.source]
 type = "git"
 url = "https://github.com/trojvn/montywrapper.git"
 reference = "HEAD"
-resolved_reference = "fd9c5ba0d967647e82aa31be916b315fe9c6e25d"
+resolved_reference = "9177e22f26741aa62caaed9a138433be5a1679b9"
 
 [[package]]
 name = "pyaes"
