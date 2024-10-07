@@ -25,11 +25,13 @@ class Tagger(BaseThon):
         fwd_from: str,
         usernames: set[str],
         fwd_index: int = 0,
+        period: int | None = None,
     ):
         super().__init__(json_data)
         self.item, self.json_file = item, json_file
         self.fwd_from, self.fwd_index = fwd_from, fwd_index
         self.usernames = {u if u.startswith("@") else f"@{u}" for u in usernames}
+        self.period = period
 
     async def __get_peer_stories(self) -> MessageMediaPhoto | None:
         try:
@@ -86,6 +88,7 @@ class Tagger(BaseThon):
                     media=from_peer,  # type: ignore
                     privacy_rules=[await self.__get_input_privacy()],
                     caption=" ".join(self.usernames),
+                    period=None if not self.period else self.period,
                 )
             )
             r = "|".join(await self.__get_dialogs())

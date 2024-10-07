@@ -79,6 +79,13 @@ def _main():
         return console.input("Нажмите Enter для продолжения...")
     users_count_ask = int(users_count_ask)
 
+    _prompt = "Введите период действия сторис (0 - дефолтный)"
+    period_ask = Prompt.ask(_prompt, console=console, default="0")
+    if not period_ask.isdigit():
+        console.log("Параметр должен быть числом!", style="yellow")
+        return console.input("Нажмите Enter для продолжения...")
+    period_ask = int(period_ask)
+
     _prompt = "Сколько потоков нужно для работы?"
     threads_ask = Prompt.ask(_prompt, console=console, default=str(sessions_count))
     if not threads_ask.isdigit():
@@ -88,7 +95,7 @@ def _main():
     if not checker():
         return console.input("Нажмите Enter для продолжения...")
 
-    s = Starter(fwd_from_ask, fwd_index_ask, users_count_ask, threads_ask)
+    s = Starter(fwd_from_ask, fwd_index_ask, users_count_ask, threads_ask, period_ask)
 
     for _ in range(count_stories_ask):
         if not asyncio.run(s.main()):

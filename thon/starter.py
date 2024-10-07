@@ -14,8 +14,16 @@ u = UsersDB()
 
 
 class Starter(BaseSession):
-    def __init__(self, fwd_from: str, fwd_index: int, users_count: int, threads: int):
+    def __init__(
+        self,
+        fwd_from: str,
+        fwd_index: int,
+        users_count: int,
+        threads: int,
+        period: int | None,
+    ):
         self.fwd_from, self.fwd_index = fwd_from, fwd_index - 1
+        self.period = None if period == 0 else period
         self.semaphore = Semaphore(threads)
         self.users_count = users_count
         Tagger.is_donor_good = True
@@ -28,7 +36,15 @@ class Starter(BaseSession):
         json_data: dict,
         users: set[str],
     ):
-        t = Tagger(item, json_file, json_data, self.fwd_from, users, self.fwd_index)
+        t = Tagger(
+            item,
+            json_file,
+            json_data,
+            self.fwd_from,
+            users,
+            self.fwd_index,
+            self.period,
+        )
         async with self.semaphore:
             if not Tagger.is_donor_good:
                 return u.restore_users_from_db(users)
