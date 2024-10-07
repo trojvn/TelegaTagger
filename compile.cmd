@@ -1,0 +1,1 @@
+cmd /k "git pull & poetry install --no-root & .venv\Scripts\activate & python compile.py"
