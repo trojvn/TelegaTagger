@@ -1,5 +1,6 @@
 import asyncio
 from pathlib import Path
+from random import randint
 from time import sleep
 
 from rich.prompt import Prompt
@@ -12,6 +13,18 @@ from thon.starter import Starter
 from users_db import UsersDB
 
 u = UsersDB()
+
+
+def _sleep_after_story(delay_ask: str) -> tuple[int, int] | None:
+    if "-" in delay_ask:
+        _delay_ask = delay_ask.split("-", maxsplit=1)
+        delay1, delay2 = _delay_ask[0], _delay_ask[1]
+        if not delay1.isdigit() or not delay2.isdigit():
+            return console.log("Параметр должен быть числом!", style="yellow")
+        return int(delay1), int(delay2)
+    if not delay_ask.isdigit():
+        return console.log("Параметр должен быть числом!", style="yellow")
+    return int(delay_ask), int(delay_ask)
 
 
 def _main():
@@ -65,12 +78,11 @@ def _main():
         return console.input("Нажмите Enter для продолжения...")
     fwd_index_ask = int(fwd_index_ask)
 
-    _prompt = "Задержка между сторис (сек.)"
+    _prompt = "Задержка между сторис (сек.) (можно рандом, например 60-120)"
     delay_ask = Prompt.ask(_prompt, console=console, default="10")
-    if not delay_ask.isdigit():
-        console.log("Параметр должен быть числом!", style="yellow")
+    if not (r := _sleep_after_story(delay_ask)):
         return console.input("Нажмите Enter для продолжения...")
-    delay_ask = int(delay_ask)
+    delay1, delay2 = r
 
     _prompt = "Сколько юзеров упоминать в 1 сторис?"
     users_count_ask = Prompt.ask(_prompt, console=console, default="1")
@@ -100,7 +112,7 @@ def _main():
     for _ in range(count_stories_ask):
         if not asyncio.run(s.main()):
             break
-        sleep(delay_ask)
+        sleep(randint(delay1, delay2))
 
     return console.input("Нажмите Enter для продолжения...")
 
