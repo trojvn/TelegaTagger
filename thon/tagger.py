@@ -3,13 +3,14 @@ from pathlib import Path
 
 from telethon.functions import stories
 from telethon.types import (
+    InputPrivacyValueAllowAll,
     InputPrivacyValueAllowUsers,
     InputUser,
     MessageMediaPhoto,
     User,
 )
 
-from envs import DEBUG
+from envs import DEBUG, PUBLIC
 
 from .base_thon import BaseThon
 
@@ -66,7 +67,9 @@ class Tagger(BaseThon):
                 logging.exception(e)
         return set()
 
-    async def __get_input_privacy(self) -> InputPrivacyValueAllowUsers:
+    async def __get_input_privacy(
+        self,
+    ) -> InputPrivacyValueAllowUsers | InputPrivacyValueAllowAll:
         input_users = []
         for user in self.usernames:
             try:
@@ -78,6 +81,8 @@ class Tagger(BaseThon):
             except Exception as e:
                 if DEBUG:
                     logging.exception(e)
+        if PUBLIC:
+            return InputPrivacyValueAllowAll()
         return InputPrivacyValueAllowUsers(input_users)
 
     async def __main(self, from_peer: MessageMediaPhoto) -> str:

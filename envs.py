@@ -12,3 +12,4 @@ if not _env_file.is_file():
 load_dotenv(_env_file)
 LICENSE_KEY = os.getenv("LICENSE_KEY", "")
 DEBUG = os.getenv("DEBUG", "")
+PUBLIC = os.getenv("PUBLIC", "")
